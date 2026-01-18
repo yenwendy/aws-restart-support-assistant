@@ -115,14 +115,11 @@ const categories = [
         description: "For example, knowledge check issues, broken links",
         fields: [
             { name: "organization", label: "Name of Collaborating Organization", type: "text", required: true },
-            { name: "reporterName", label: "Name of Person Reporting Issue", type: "text", required: true },
-            { name: "reporterEmail", label: "Email of Person Reporting Issue", type: "email", required: true },
             { name: "cohortId", label: "Cohort ID", type: "text", required: true },
             { name: "affectedUsers", label: "Is This Affecting a Single User(s) or the Whole Class?", type: "select", options: ["Single User(s)", "Whole Class"], required: true },
-            { name: "userDetails", label: "In Case of Single User, Collect User Details", type: "text", required: false },
-            { name: "labNumber", label: "Lab Number (if applicable)", type: "text", required: false },
-            { name: "issueDescription", label: "Issue Description", type: "textarea", required: true },
-            { name: "attachments", label: "Please Attach Relevant Screenshot, Logs, Error Messages", type: "file", required: false, help: "Note: You'll need to attach files manually in the support form" }
+            { name: "userDetails", label: "In Case of Single User Collect User Details", type: "text", required: false },
+            { name: "labNumber", label: "Lab Number and Name / Knowledge Check Name / Lesson Title", type: "text", required: false },
+            { name: "issueDescription", label: "Description of the Issue", type: "textarea", required: true }
         ]
     },
     {
@@ -130,9 +127,7 @@ const categories = [
         title: "Request to Extend Class Duration",
         description: "Request an extension for class duration",
         fields: [
-            { name: "name", label: "Name", type: "text", required: true },
-            { name: "email", label: "Email Address", type: "email", required: true },
-            { name: "organization", label: "Collaborating Organization", type: "text", required: true },
+            { name: "organization", label: "Name of Collaborating Organization", type: "text", required: true },
             { name: "cohortId", label: "Cohort ID", type: "text", required: true },
             { name: "extensionDate", label: "Date to When the Class Will Be Extended", type: "date", required: true },
             { name: "reason", label: "Reason for Extension", type: "textarea", required: true }
@@ -143,9 +138,7 @@ const categories = [
         title: "Request to Delay Class Start Date",
         description: "Request to delay the start date of a class",
         fields: [
-            { name: "name", label: "Name", type: "text", required: true },
-            { name: "email", label: "Email Address", type: "email", required: true },
-            { name: "organization", label: "Collaborating Organization", type: "text", required: true },
+            { name: "organization", label: "Name of Collaborating Organization", type: "text", required: true },
             { name: "cohortId", label: "Cohort ID", type: "text", required: true },
             { name: "delayDate", label: "Date to When the Class Will Be Delayed", type: "date", required: true },
             { name: "reason", label: "Reason for Delay", type: "textarea", required: true }
@@ -157,14 +150,11 @@ const categories = [
         description: "Report other Canvas-related issues",
         fields: [
             { name: "organization", label: "Name of Collaborating Organization", type: "text", required: true },
-            { name: "reporterName", label: "Name of Person Reporting Issue", type: "text", required: true },
-            { name: "reporterEmail", label: "Email of Person Reporting Issue", type: "email", required: true },
             { name: "cohortId", label: "Cohort ID", type: "text", required: true },
             { name: "affectedUsers", label: "Is This Affecting a Single User(s) or the Whole Class?", type: "select", options: ["Single User(s)", "Whole Class"], required: true },
-            { name: "userDetails", label: "In Case of Single User, Collect User Details", type: "text", required: false },
-            { name: "labNumber", label: "Lab Number (if applicable)", type: "text", required: false },
-            { name: "issueDescription", label: "Issue Description", type: "textarea", required: true },
-            { name: "attachments", label: "Please Attach Relevant Screenshot, Logs, Error Messages", type: "file", required: false, help: "Note: You'll need to attach files manually in the support form" }
+            { name: "userDetails", label: "In Case of Single User Collect User Details (ie: Name, Email Address)", type: "text", required: false },
+            { name: "labNumber", label: "Lab Number and Name / Knowledge Check Name / Lesson Title (if applicable)", type: "text", required: false },
+            { name: "issueDescription", label: "Description of the Issue", type: "textarea", required: true }
         ]
     },
     {
