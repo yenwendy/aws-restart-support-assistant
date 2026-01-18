@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS re/Start Support Request Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="images/aws-restart-logo.png" alt="AWS re/Start Logo" class="logo">
+            <h1>Support Request Assistant</h1>
+            <p class="subtitle">Generate formatted support requests for AWS re/Start Collaborating Organizations</p>
+        </header>
+
+        <main id="mainContent">
+            <!-- Step 1: Category Selection -->
+            <div class="step active" id="step1">
+                <h2>Step 1: Select Request Category</h2>
+                <p class="instruction">Choose the category that best describes your support request:</p>
+                
+                <div class="category-grid" id="categoryGrid"></div>
+            </div>
+
+            <!-- Step 2: Fill Information -->
+            <div class="step" id="step2">
+                <div class="step-header">
+                    <button class="btn-back" onclick="goBack()">← Back to Categories</button>
+                    <h2 id="selectedCategory"></h2>
+                </div>
+                
+                <p class="instruction" id="categoryDescription"></p>
+                
+                <form id="supportForm" class="support-form">
+                    <div id="formFields"></div>
+                </form>
+            </div>
+
+            <!-- Step 3: Review & Submit -->
+            <div class="step" id="step3">
+                <div class="step-header">
+                    <button class="btn-back" onclick="editForm()">← Edit Information</button>
+                    <h2>Review Your Request</h2>
+                </div>
+                
+                <div class="review-box">
+                    <h3>Request Summary</h3>
+                    <pre id="formattedOutput"></pre>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary btn-large" onclick="copyAndSubmit()">
+                        📋 Copy to Clipboard & Open Support Form
+                    </button>
+                    <p class="help-text">This will copy your formatted request and open the AWS support form in a new tab</p>
+                </div>
+
+                <div class="instructions-box">
+                    <h3>📝 Next Steps:</h3>
+                    <ol>
+                        <li>Click the button above to copy your request</li>
+                        <li>The AWS support form will open in a new tab</li>
+                        <li>Paste (Ctrl+V or Cmd+V) your request into the support form which says "How can we assist you today?"
+                            <div style="margin-top: 10px;">
+                                <img src="images/01-support-form-homepage.png" alt="Support form homepage" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </li>
+                        <li>Complete any additional required fields</li>
+                        <li>Click "Continue" button to proceed to the next page</li>
+                        <li>Scroll down the page and click "Create case without sign in". A new section called "Create a case" appears.
+                            <div style="margin-top: 10px;">
+                                <img src="images/02-create-case-without-sign-in.png" alt="Create case without sign in" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </li>
+                        <li>Complete the fields in "Create a case" and click on "Create a case" button to submit your request.
+                            <div style="margin-top: 10px;">
+                                <img src="images/03-create-case-submission.png" alt="Create a case submission" style="max-width: 100%; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                        </li>
+                        <li>You will receive an email with the case number. Wait for a security email (from: aws-cs-restart-form@amazon.com) and reply back to verify you are the person making the support request.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="step" id="step4">
+                <div class="success-card">
+                    <div class="success-icon">✓</div>
+                    <h2>Request Copied!</h2>
+                    <p>Your support request has been copied to your clipboard.</p>
+                    
+                    <div class="next-steps">
+                        <h3>What happens next?</h3>
+                        <ol>
+                            <li>The AWS support form should have opened in a new tab</li>
+                            <li>Paste your request into the support form which says "How can we assist you today?" (Ctrl+V or Cmd+V)</li>
+                            <li>Complete any additional required fields</li>
+                            <li>Click "Continue" button to proceed to the next page</li>
+                            <li>Scroll down and click "Create case without sign in"</li>
+                            <li>Complete the fields in "Create a case" and submit</li>
+                            <li>Watch for an email from <strong>aws-cs-restart-form@amazon.com</strong></li>
+                            <li>Reply to that email to validate your request (security requirement)</li>
+                        </ol>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="startOver()">Submit Another Request</button>
+                        <button class="btn-secondary" onclick="window.close()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>AWS re/Start Support Request Assistant | <a href="https://support.aws.amazon.com/#/contacts/aws-restart" target="_blank">Direct Support Link</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
