@@ -8,9 +8,9 @@ const categories = [
             { name: "organization", label: "Name of Collaborating Organization", type: "text", required: true },
             { name: "cohortId", label: "Cohort ID", type: "text", required: true },
             { name: "cohortEndDate", label: "Cohort End Date", type: "date", required: true },
-            { name: "learnerName", label: "Name of the Learner", type: "text", required: true },
-            { name: "learnerEmail", label: "Email Address of the Learner", type: "email", required: true },
-            { name: "description", label: "Description of the Inquiry", type: "textarea", required: true }
+            { name: "affectedUsers", label: "Is This Affecting a Single User(s) or the Whole Class?", type: "select", options: ["Single User(s)", "Whole Class"], required: true },
+            { name: "numberOfLearners", label: "Number of Learners Affected?", type: "number", required: true, min: 1, dynamic: true },
+            { name: "additionalInfo", label: "Additional Information", type: "textarea", required: false }
         ]
     },
     {
@@ -268,6 +268,11 @@ function renderForm() {
         container.innerHTML += `<div id="dynamicCohortFields"></div>`;
     }
     
+    // Add container for dynamic learner fields (for category 1)
+    if (currentCategory.id === 1) {
+        container.innerHTML += `<div id="dynamicLearnerFields"></div>`;
+    }
+    
     container.innerHTML += `
         <div class="form-actions">
             <button type="button" class="btn-primary" onclick="reviewRequest()">Review Request →</button>
@@ -310,6 +315,22 @@ function reviewRequest() {
         }
     }
     
+    // Collect dynamic learner data for category 1
+    if (currentCategory.id === 1) {
+        const numberOfLearners = parseInt(formData.numberOfLearners);
+        formData.learners = [];
+        for (let i = 1; i <= numberOfLearners; i++) {
+            const learnerName = document.getElementById(`learnerName_${i}`)?.value;
+            const learnerEmail = document.getElementById(`learnerEmail_${i}`)?.value;
+            if (learnerName && learnerEmail) {
+                formData.learners.push({
+                    name: learnerName,
+                    email: learnerEmail
+                });
+            }
+        }
+    }
+    
     // Generate formatted output
     const formatted = formatRequest();
     document.getElementById('formattedOutput').textContent = formatted;
@@ -317,8 +338,9 @@ function reviewRequest() {
     showStep(3);
 }
 
-// Handle dynamic field changes (for exam vouchers)
+// Handle dynamic field changes (for exam vouchers and learners)
 function handleDynamicField(fieldName) {
+    // Handle Category 15: Exam Vouchers - Multiple Cohorts
     if (fieldName === 'numberOfCohorts' && currentCategory.id === 15) {
         const numberOfCohorts = parseInt(document.getElementById('numberOfCohorts').value);
         const container = document.getElementById('dynamicCohortFields');
@@ -333,6 +355,57 @@ function handleDynamicField(fieldName) {
         
         for (let i = 1; i <= numberOfCohorts; i++) {
             html += `
+                <div class="cohort-group" style="background: var(--aws-light-gray); padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                    <h4 style="color: var(--aws-dark); margin-bottom: 10px;">Cohort ${i}</h4>
+                    <div class="form-group">
+                        <label for="cohortId_${i}">Cohort ID <span class="required">*</span></label>
+                        <input type="text" id="cohortId_${i}" name="cohortId_${i}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="voucherCount_${i}">Number of Exam Vouchers Required <span class="required">*</span></label>
+                        <input type="number" id="voucherCount_${i}" name="voucherCount_${i}" min="1" required>
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += '</div>';
+        container.innerHTML = html;
+    }
+    
+    // Handle Category 1: Post Graduate Resources - Multiple Learners
+    if (fieldName === 'numberOfLearners' && currentCategory.id === 1) {
+        const numberOfLearners = parseInt(document.getElementById('numberOfLearners').value);
+        const container = document.getElementById('dynamicLearnerFields');
+        
+        if (!numberOfLearners || numberOfLearners < 1) {
+            container.innerHTML = '';
+            return;
+        }
+        
+        let html = '<div class="learner-fields-section">';
+        html += '<h3 style="margin-top: 20px; margin-bottom: 15px; color: var(--aws-dark);">Learner Details</h3>';
+        
+        for (let i = 1; i <= numberOfLearners; i++) {
+            html += `
+                <div class="learner-group" style="background: var(--aws-light-gray); padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
+                    <h4 style="color: var(--aws-dark); margin-bottom: 10px;">Learner ${i}</h4>
+                    <div class="form-group">
+                        <label for="learnerName_${i}">Name of the Learner <span class="required">*</span></label>
+                        <input type="text" id="learnerName_${i}" name="learnerName_${i}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="learnerEmail_${i}">Email Address of the Learner <span class="required">*</span></label>
+                        <input type="email" id="learnerEmail_${i}" name="learnerEmail_${i}" required>
+                    </div>
+                </div>
+            `;
+        }
+        
+        html += '</div>';
+        container.innerHTML = html;
+    }
+}
                 <div class="cohort-group" style="background: var(--aws-light-gray); padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
                     <h4 style="color: var(--aws-dark); margin-bottom: 10px;">Cohort ${i}</h4>
                     <div class="form-group">
@@ -372,6 +445,16 @@ function formatRequest() {
             output += `Cohort ${index + 1}:\n`;
             output += `  Cohort ID: ${cohort.cohortId}\n`;
             output += `  Number of Exam Vouchers Required: ${cohort.voucherCount}\n\n`;
+        });
+    }
+    
+    // Handle dynamic learner data for category 1
+    if (currentCategory.id === 1 && formData.learners && formData.learners.length > 0) {
+        output += `Number of Learners Affected:\n${formData.learners.length}\n\n`;
+        formData.learners.forEach((learner, index) => {
+            output += `Learner ${index + 1}:\n`;
+            output += `  Name: ${learner.name}\n`;
+            output += `  Email: ${learner.email}\n\n`;
         });
     }
     
