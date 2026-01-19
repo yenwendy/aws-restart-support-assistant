@@ -406,24 +406,6 @@ function handleDynamicField(fieldName) {
         container.innerHTML = html;
     }
 }
-                <div class="cohort-group" style="background: var(--aws-light-gray); padding: 15px; border-radius: var(--border-radius); margin-bottom: 15px;">
-                    <h4 style="color: var(--aws-dark); margin-bottom: 10px;">Cohort ${i}</h4>
-                    <div class="form-group">
-                        <label for="cohortId_${i}">Cohort ID <span class="required">*</span></label>
-                        <input type="text" id="cohortId_${i}" name="cohortId_${i}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="voucherCount_${i}">Number of Exam Vouchers Required <span class="required">*</span></label>
-                        <input type="number" id="voucherCount_${i}" name="voucherCount_${i}" min="1" required>
-                    </div>
-                </div>
-            `;
-        }
-        
-        html += '</div>';
-        container.innerHTML = html;
-    }
-}
 
 // Format request for submission
 function formatRequest() {
